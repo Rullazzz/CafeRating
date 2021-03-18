@@ -23,7 +23,7 @@ namespace CafeRating.BL.Controller
         {
             //TODO: Провека параметров.
 
-            User = new User(userName, userGender, birthdate);    
+            User = new User(userName, userGender, birthdate); 
         }
 
         /// <summary>
