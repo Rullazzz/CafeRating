@@ -2,10 +2,11 @@
 
 namespace CafeRating.BL.Model
 {
+    [Serializable]
     /// <summary>
     /// Пользователь.
     /// </summary>
-    class User
+    public class User
     {
         #region Свойства
         /// <summary>
