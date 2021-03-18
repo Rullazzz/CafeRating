@@ -22,6 +22,7 @@ namespace CafeRating.CMD
 
             var userController = new UserController(name, gender, birthdate);
             userController.Save();
+
         }
     }
 }
