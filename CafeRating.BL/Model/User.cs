@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 
 namespace CafeRating.BL.Model
 {
@@ -17,12 +18,25 @@ namespace CafeRating.BL.Model
         /// <summary>
         /// Пол.
         /// </summary>
-        public string Gender { get; }
+        public string Gender { get; set; }
 
         /// <summary>
         /// Дата рождения.
         /// </summary>
-        public DateTime BirthDate { get; }
+        public DateTime BirthDate { get; set; }
+
+        /// <summary>
+        /// Возраст.
+        /// </summary>
+        public int Age
+        {
+            get
+            {
+                var now = DateTime.Today;
+                var age = now.Year - BirthDate.Year;
+                return BirthDate > now.AddDays(-age) ? age-- : age;
+            }
+        }
         #endregion
 
         /// <summary>
@@ -55,9 +69,19 @@ namespace CafeRating.BL.Model
             BirthDate = birthDate;
         }
 
+        public User(string name)
+        {
+            if (string.IsNullOrWhiteSpace(name))
+            {
+                throw new ArgumentException($"{nameof(name)} не может быть пустым или содержать только пробел", nameof(name));
+            }
+
+            Name = name;
+        }
+
         public override string ToString()
         {
-            return Name;
+            return Name + " " + Age;
         }
     }
 }

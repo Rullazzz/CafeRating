@@ -10,19 +10,41 @@ namespace CafeRating.CMD
         {
             Console.WriteLine("Вас приветствует приложение CafeRating!");
 
-            //TODO: Сделать проверки на входные данные.
             Console.WriteLine("Введите имя пользователя");
             var name = Console.ReadLine();
 
-            Console.WriteLine("Введите пол");
-            var gender = Console.ReadLine();
+            var userController = new UserController(name);
 
-            Console.WriteLine("Введите дату рождения");
-            var birthdate = DateTime.Parse(Console.ReadLine());
+            if (userController.IsNewUser)
+            {
+                Console.Write("Введите пол: ");
+                var gender = Console.ReadLine();
+                var birthDate = ParseDate();
 
-            var userController = new UserController(name, gender, birthdate);
-            userController.Save();
+                userController.SetNewUserDate(gender, birthDate);
+                userController.Save();
+            }
 
+            Console.WriteLine(userController.CurrentUser);
+            Console.ReadLine();
+        }
+
+        private static DateTime ParseDate()
+        {
+            DateTime birthDate;
+            while (true)
+            {
+                Console.Write("Введите дату рождения (dd.mm.yyyy): ");
+                if (DateTime.TryParse(Console.ReadLine(), out birthDate))
+                {
+                    break;
+                }
+                else
+                {
+                    Console.WriteLine("Неверный формат даты рождения");
+                }
+            }
+            return birthDate;
         }
     }
 }
