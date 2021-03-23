@@ -22,7 +22,6 @@ namespace CafeRating.CMD
                 var birthDate = ParseDate();
 
                 userController.SetNewUserDate(gender, birthDate);
-                userController.Save();
             }
 
             Console.WriteLine(userController.CurrentUser);

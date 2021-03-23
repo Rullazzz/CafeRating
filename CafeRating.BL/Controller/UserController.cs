@@ -17,8 +17,14 @@ namespace CafeRating.BL.Controller
         /// </summary>
         public List<User> Users { get; }
 
+        /// <summary>
+        /// Текущий пользователь.
+        /// </summary>
         public User CurrentUser { get; }
 
+        /// <summary>
+        /// Возвращает true, если это новый пользователь, иначе false.
+        /// </summary>
         public bool IsNewUser { get; } = false;
 
         /// <summary>
@@ -44,6 +50,11 @@ namespace CafeRating.BL.Controller
             }
         }
 
+        /// <summary>
+        /// Установить новые данные пользователю.
+        /// </summary>
+        /// <param name="gender"> Пол. </param>
+        /// <param name="birthDate"> Дата рождения. </param>
         public void SetNewUserDate(string gender, DateTime birthDate)
         {
             //TODO: Проверка.
@@ -56,28 +67,20 @@ namespace CafeRating.BL.Controller
         /// Получить сохраненный список пользователей.
         /// </summary>
         /// <returns> Пользователи приложения. </returns>
-        public List<User> GetUserData()
+        private List<User> GetUserData()
         {
             var formatter = new BinaryFormatter();
 
             using (var fs = new FileStream("users.dat", FileMode.OpenOrCreate))
             {
-                try
+                if (fs.Length > 0 && formatter.Deserialize(fs) is List<User> users)
                 {
-                    if (formatter.Deserialize(fs) is List<User> users)
-                    {
-                        return users;
-                    }
-                    else
-                    {
-                        return new List<User>();
-                    }
+                    return users;
                 }
-                catch (System.Runtime.Serialization.SerializationException)
+                else
                 {
-                     formatter.Serialize(fs, new List<User>());
+                    return new List<User>();
                 }
-                return new List<User>();
             }
         }
 
