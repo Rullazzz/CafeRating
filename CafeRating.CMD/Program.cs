@@ -1,6 +1,5 @@
 ﻿using System;
 using CafeRating.BL.Controller;
-using CafeRating.BL.Model;
 
 namespace CafeRating.CMD
 {
@@ -10,7 +9,7 @@ namespace CafeRating.CMD
         {
             Console.WriteLine("Вас приветствует приложение CafeRating!");
 
-            Console.WriteLine("Введите имя пользователя");
+            Console.Write("Введите имя пользователя: ");
             var name = Console.ReadLine();
 
             var userController = new UserController(name);

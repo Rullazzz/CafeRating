@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace CafeRating.BL.Model
 {
@@ -36,6 +37,8 @@ namespace CafeRating.BL.Model
                 return BirthDate > now.AddDays(-age) ? age-- : age;
             }
         }
+
+        public List<UserComment> Comments { get; set; }
         #endregion
 
         /// <summary>
