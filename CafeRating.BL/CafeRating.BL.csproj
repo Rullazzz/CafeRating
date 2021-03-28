@@ -41,6 +41,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controller\BaseController.cs" />
+    <Compile Include="Controller\CafeController.cs" />
     <Compile Include="Controller\UserController.cs" />
     <Compile Include="Model\Cafe.cs" />
     <Compile Include="Model\User.cs" />

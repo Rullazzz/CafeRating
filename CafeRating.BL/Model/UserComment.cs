@@ -4,11 +4,8 @@ namespace CafeRating.BL.Model
 {
     public class UserComment
     {
-        /// <summary>
-        /// Кафе.
-        /// </summary>
-        public string NameCafe { get; }
-        
+        public string CafeName { get; set; }
+
         /// <summary>
         /// Оценка кафе.
         /// </summary>
@@ -19,24 +16,27 @@ namespace CafeRating.BL.Model
         /// </summary>
         public string Comment { get; }
 
+        public User Author { get; }
+
         /// <summary>
         /// Создать новый комментарий.
         /// </summary>
         /// <param name="nameCafe"> Название кафе. </param>
         /// <param name="rating"> Оценка кафе. </param>
         /// <param name="comment"> Комментарий. </param>
-        public UserComment(string nameCafe, double rating, string comment)
+        public UserComment(User author, string cafeName, double rating, string comment)
         {
             //TODO: Проверка
 
-            NameCafe = nameCafe;
+            CafeName = cafeName;
+            Author = author;
             Rating = rating;
             Comment = comment;
         }
 
         public override string ToString()
         {
-            return NameCafe + Rating + Comment;
+            return $"{Author.Name} ставит оценку {Rating}: {Comment}";
         }
     }
 }

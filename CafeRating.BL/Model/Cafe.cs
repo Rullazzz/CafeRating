@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace CafeRating.BL.Model
 {
@@ -7,16 +8,28 @@ namespace CafeRating.BL.Model
         /// <summary>
         /// Название кафе.
         /// </summary>
-        public string Name { get; set; }
+        public string Name { get; }
 
-        /// <summary>
-        /// Средняя оценка кафе.
-        /// </summary>
-        public double AverageRating { get; set; }
+        public List<UserComment> Comments { get; set; }
 
-        public override string ToString()
+        public double Rating
         {
-            return Name + AverageRating;
+            get
+            {
+                double rating = 0;
+                if (Comments.Count > 0)
+                {
+                    foreach (var comment in Comments)
+                        rating += comment.Rating;
+                    return rating / Comments.Count;
+                }
+                return rating;
+            }
+        }
+
+        public Cafe(string name)
+        {
+            Name = name;
         }
     }
 }

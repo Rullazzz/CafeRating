@@ -10,7 +10,7 @@ namespace CafeRating.BL.Controller
     /// <summary>
     /// Контроллер пользователя.
     /// </summary>
-    public class UserController
+    public class UserController : BaseController
     {
         /// <summary>
         /// Пользователь приложения.
@@ -26,6 +26,8 @@ namespace CafeRating.BL.Controller
         /// Возвращает true, если это новый пользователь, иначе false.
         /// </summary>
         public bool IsNewUser { get; } = false;
+
+        private const string USERS_FILE_NAME = "users.dat"; 
 
         /// <summary>
         /// Создание нового контроллера пользователя.
@@ -79,19 +81,7 @@ namespace CafeRating.BL.Controller
         /// <returns> Пользователи приложения. </returns>
         private List<User> GetUserData()
         {
-            var formatter = new BinaryFormatter();
-
-            using (var fs = new FileStream("users.dat", FileMode.OpenOrCreate))
-            {
-                if (fs.Length > 0 && formatter.Deserialize(fs) is List<User> users)
-                {
-                    return users;
-                }
-                else
-                {
-                    return new List<User>();
-                }
-            }
+            return Load<List<User>>(USERS_FILE_NAME, Users) ?? new List<User>();
         }
 
         /// <summary>
@@ -99,12 +89,7 @@ namespace CafeRating.BL.Controller
         /// </summary>
         public void Save()
         {
-            var formatter = new BinaryFormatter();
-
-            using(var fs = new FileStream("users.dat", FileMode.OpenOrCreate))
-            {
-                formatter.Serialize(fs, Users);
-            }
+            base.Save(USERS_FILE_NAME, Users);
         }
     }
 }
