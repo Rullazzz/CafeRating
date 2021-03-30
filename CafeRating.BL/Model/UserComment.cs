@@ -2,6 +2,7 @@
 
 namespace CafeRating.BL.Model
 {
+    [Serializable]
     public class UserComment
     {
         public string CafeName { get; set; }
@@ -9,7 +10,7 @@ namespace CafeRating.BL.Model
         /// <summary>
         /// Оценка кафе.
         /// </summary>
-        public double Rating { get; }
+        public int Rating { get; }
 
         /// <summary>
         /// Комментарий.
@@ -24,7 +25,7 @@ namespace CafeRating.BL.Model
         /// <param name="nameCafe"> Название кафе. </param>
         /// <param name="rating"> Оценка кафе. </param>
         /// <param name="comment"> Комментарий. </param>
-        public UserComment(User author, string cafeName, double rating, string comment)
+        public UserComment(User author, string cafeName, int rating, string comment)
         {
             //TODO: Проверка
 
