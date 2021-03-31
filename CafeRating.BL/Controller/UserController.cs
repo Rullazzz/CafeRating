@@ -81,7 +81,7 @@ namespace CafeRating.BL.Controller
         /// <returns> Пользователи приложения. </returns>
         private List<User> GetUserData()
         {
-            return Load<List<User>>(USERS_FILE_NAME, Users) ?? new List<User>();
+            return Load<List<User>>(USERS_FILE_NAME) ?? new List<User>();
         }
 
         /// <summary>

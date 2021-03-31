@@ -5,6 +5,9 @@ namespace CafeRating.BL.Model
     [Serializable]
     public class UserComment
     {
+        /// <summary>
+        /// Название кафе.
+        /// </summary>
         public string CafeName { get; set; }
 
         /// <summary>
@@ -17,6 +20,9 @@ namespace CafeRating.BL.Model
         /// </summary>
         public string Comment { get; }
 
+        /// <summary>
+        /// Автор комментария.
+        /// </summary>
         public User Author { get; }
 
         /// <summary>

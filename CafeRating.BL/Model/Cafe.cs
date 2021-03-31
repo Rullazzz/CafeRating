@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace CafeRating.BL.Model
 {
@@ -10,8 +9,14 @@ namespace CafeRating.BL.Model
         /// </summary>
         public string Name { get; }
 
+        /// <summary>
+        /// Список комментариев кафе.
+        /// </summary>
         public List<UserComment> Comments { get; set; }
 
+        /// <summary>
+        /// Рейтинг кафе.
+        /// </summary>
         public double Rating
         {
             get
@@ -27,6 +32,10 @@ namespace CafeRating.BL.Model
             }
         }
 
+        /// <summary>
+        /// Создать новое кафе.
+        /// </summary>
+        /// <param name="name"> Название кафе. </param>
         public Cafe(string name)
         {
             Name = name;

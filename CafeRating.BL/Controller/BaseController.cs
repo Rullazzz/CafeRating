@@ -11,11 +11,11 @@ namespace CafeRating.BL.Controller
         /// <summary>
         /// Получить данные
         /// </summary>
-        /// <typeparam name="T"> Тип данных </typeparam>
+        /// <typeparam name="T"> Тип возвращаемых данных </typeparam>
         /// <param name="fileName"> Путь для сохранения данных. </param>
         /// <param name="item"> Объект сохранения </param>
         /// <returns> Данные из файла или Default(T) </returns>
-        protected T Load<T>(string fileName, object item)
+        protected T Load<T>(string fileName)
         {
             var formatter = new BinaryFormatter();
 

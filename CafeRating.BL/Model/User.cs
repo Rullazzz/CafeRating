@@ -69,6 +69,10 @@ namespace CafeRating.BL.Model
             BirthDate = birthDate;
         }
 
+        /// <summary>
+        /// Создать нового пользователя.
+        /// </summary>
+        /// <param name="name"> Имя. </param>
         public User(string name)
         {
             if (string.IsNullOrWhiteSpace(name))

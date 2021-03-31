@@ -26,38 +26,56 @@ namespace CafeRating.CMD
                 userController.SetNewUserDate(gender, birthDate);
             }
 
-            //var commands = new List<string>()
-            //{
-            //    "help - Вывод команд",
-            //    ""
-            //};
-
             var cafeController = new CafeController(userController.CurrentUser);
 
-            Console.Write("Вы хотите оставить отзыв о кафе? (да или нет) ");
-            var choice = Console.ReadLine();
+            //Console.Write("Вы хотите оставить отзыв о кафе? (да или нет) ");
 
-            if (choice == "да")
+            DisplayCommands();
+            bool isAlive = true;
+            while (isAlive)
             {
-                Console.WriteLine("О каком кафе хотите оставить свой отзыв?");
-                foreach(var _cafe in cafeController.Cafes)
-                    Console.WriteLine(_cafe);
-                choice = Console.ReadLine();
-                var cafe = cafeController.Cafes.FirstOrDefault(c => c.Name == choice);
-                // TODO: Написать проверки.
-                if (cafe != null)
+                var choice = Console.ReadLine();
+
+                switch (choice)
                 {
-                    Console.Write("Ваша оценка данного кафе от 1 до 5: ");
-                    var rating = Console.ReadLine();
-
-                    Console.Write("Введите свой комментарий: ");
-                    var comment = Console.ReadLine();
-
-                    var userComment = new UserComment(userController.CurrentUser, cafe.Name, Int32.Parse(rating), comment);
-                    cafeController.AddComment(cafe, userComment);
+                    case "help":
+                        DisplayCommands();
+                        break;
+                    case "comment":
+                        // TODO: написать добавление комментария.
+                        AddComment(cafeController, userController.CurrentUser);
+                        break;
+                    case "exit":
+                        isAlive = false; 
+                        break;
+                    default:
+                        Console.WriteLine("Неизвестная команда!");
+                        break;
                 }
-            }
+            }            
             Console.ReadLine();
+        }
+
+        private static void AddComment(CafeController cafeController, User user)
+        {
+            Console.WriteLine("О каком кафе хотите оставить свой отзыв?");
+            foreach (var _cafe in cafeController.Cafes)
+                Console.WriteLine(_cafe);
+
+            var choice = Console.ReadLine();
+            var cafe = cafeController.Cafes.FirstOrDefault(c => c.Name == choice);
+            // TODO: Написать проверки.
+            if (cafe != null)
+            {
+                Console.Write("Ваша оценка данного кафе от 1 до 5: ");
+                var rating = Console.ReadLine();
+
+                Console.Write("Введите свой комментарий: ");
+                var comment = Console.ReadLine();
+
+                var userComment = new UserComment(user, cafe.Name, Int32.Parse(rating), comment);
+                cafeController.AddComment(cafe, userComment);
+            }
         }
 
         private static DateTime ParseDate()
@@ -76,6 +94,18 @@ namespace CafeRating.CMD
                 }
             }
             return birthDate;
+        }
+
+        private static void DisplayCommands()
+        {
+            var commands = new string[]
+            {
+                "help", // Вывод всех команд.
+                "comment", // Оставить комментарий какому-либо кафе.
+                "exit", // Выйти из приложения
+            };
+            foreach (var com in commands)
+                Console.WriteLine(com);
         }
     }
 }
