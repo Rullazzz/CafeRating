@@ -6,11 +6,6 @@ namespace CafeRating.BL.Model
     public class UserComment
     {
         /// <summary>
-        /// Название кафе.
-        /// </summary>
-        public string CafeName { get; set; }
-
-        /// <summary>
         /// Оценка кафе.
         /// </summary>
         public int Rating { get; }
@@ -31,11 +26,9 @@ namespace CafeRating.BL.Model
         /// <param name="nameCafe"> Название кафе. </param>
         /// <param name="rating"> Оценка кафе. </param>
         /// <param name="comment"> Комментарий. </param>
-        public UserComment(User user, string cafeName, int rating, string comment)
+        public UserComment(User user, int rating, string comment)
         {
             //TODO: Проверка
-
-            CafeName = cafeName;
             Author = user;
             Rating = rating;
             Comment = comment;

@@ -16,12 +16,11 @@ namespace CafeRating.BL.Controller.Tests
         public void AddCommentTest()
         {
             // Arrange
-            var cafeName = "Прикол";
             var userName = "Патрик";
             var rnd = new Random();
             var user = new User(userName);
             var cafe = new Cafe("Прикол");
-            var userComment = new UserComment(user, cafeName, rnd.Next(1, 6), Guid.NewGuid().ToString());
+            var userComment = new UserComment(user, rnd.Next(1, 6), Guid.NewGuid().ToString());
             var cafeController = new CafeController(user);
 
             // Act
