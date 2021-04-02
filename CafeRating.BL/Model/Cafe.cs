@@ -17,20 +17,7 @@ namespace CafeRating.BL.Model
         /// <summary>
         /// Рейтинг кафе.
         /// </summary>
-        public double Rating
-        {
-            get
-            {
-                double rating = 0;
-                if (Comments.Count > 0)
-                {
-                    foreach (var comment in Comments)
-                        rating += comment.Rating;
-                    return rating / Comments.Count;
-                }
-                return rating;
-            }
-        }
+        public double Rating { get; set; } = 0;
 
         /// <summary>
         /// Создать новое кафе.

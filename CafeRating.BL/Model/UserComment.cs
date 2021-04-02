@@ -31,12 +31,12 @@ namespace CafeRating.BL.Model
         /// <param name="nameCafe"> Название кафе. </param>
         /// <param name="rating"> Оценка кафе. </param>
         /// <param name="comment"> Комментарий. </param>
-        public UserComment(User author, string cafeName, int rating, string comment)
+        public UserComment(User user, string cafeName, int rating, string comment)
         {
             //TODO: Проверка
 
             CafeName = cafeName;
-            Author = author;
+            Author = user;
             Rating = rating;
             Comment = comment;
         }

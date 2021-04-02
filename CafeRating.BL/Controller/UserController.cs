@@ -89,7 +89,7 @@ namespace CafeRating.BL.Controller
         /// </summary>
         public void Save()
         {
-            base.Save(USERS_FILE_NAME, Users);
+            Save(USERS_FILE_NAME, Users);
         }
     }
 }

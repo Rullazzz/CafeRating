@@ -46,7 +46,7 @@ namespace CafeRating.BL.Controller
         public void AddComment(Cafe cafe, UserComment userComment)
         {
             // TODO: Сделать проверку.
-            cafe.Comments = Load<List<UserComment>>($"{cafe.Name}.dat");
+            cafe.Comments = GetComments(cafe);
             if (cafe.Comments == null)
                 cafe.Comments = new List<UserComment>();
 
@@ -63,6 +63,26 @@ namespace CafeRating.BL.Controller
             var cafe = Cafes.First(c => c.Name == cafeName);
             cafe.Comments.Remove(cafe.Comments.Find(c => c.Author == CurrentUser));
             Save($"{cafe.Name}.dat", cafe.Comments);
+        }
+
+        public void SetRating(Cafe cafe)
+        {
+            cafe.Comments = GetComments(cafe);
+            if (cafe.Comments != null)
+            {
+                var rating = 0;
+                foreach (var item in cafe.Comments)
+                {
+                    rating += item.Rating;
+                }
+                cafe.Rating = rating / cafe.Comments.Count;
+            }
+        }
+
+        public double GetRating(Cafe cafe)
+        {
+            SetRating(cafe);
+            return cafe.Rating;
         }
     }
 }
