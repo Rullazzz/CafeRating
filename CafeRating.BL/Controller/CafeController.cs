@@ -1,6 +1,7 @@
 ﻿using CafeRating.BL.Model;
 using System.Collections.Generic;
 using System.Linq;
+using System;
 
 namespace CafeRating.BL.Controller
 {
@@ -9,12 +10,12 @@ namespace CafeRating.BL.Controller
         /// <summary>
         /// Текущий пользователь.
         /// </summary>
-        public User CurrentUser { get; }
+        public readonly User CurrentUser;
 
         /// <summary>
         /// Список кофеень.
         /// </summary>
-        public List<Cafe> Cafes = new List<Cafe>
+        public IEnumerable<Cafe> Cafes = new List<Cafe>
         {
             new Cafe("Mak dak"),
             new Cafe("BlackWhite"),
@@ -29,8 +30,7 @@ namespace CafeRating.BL.Controller
         /// <param name="currentUser"> Пользователь. </param>
         public CafeController(User currentUser)
         {
-            // TODO: Проверка.
-            CurrentUser = currentUser;
+            CurrentUser = currentUser ?? throw new ArgumentNullException("Имя пользователя не может быть пустым или null", nameof(currentUser));
         }
 
         public List<UserComment> GetComments(Cafe cafe)
@@ -45,7 +45,18 @@ namespace CafeRating.BL.Controller
         /// <param name="userComment"> Комментарий. </param>
         public void AddComment(Cafe cafe, UserComment userComment)
         {
-            // TODO: Сделать проверку.
+            #region Проверка
+            if (cafe is null)
+            {
+                throw new ArgumentNullException($"{nameof(cafe)} не может быть null", nameof(cafe));
+            }
+
+            if (userComment is null)
+            {
+                throw new ArgumentNullException($"{nameof(userComment)} не может быть null", nameof(userComment));
+            }
+            #endregion
+
             cafe.Comments = GetComments(cafe);
             if (cafe.Comments == null)
                 cafe.Comments = new List<UserComment>();

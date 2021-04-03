@@ -28,10 +28,9 @@ namespace CafeRating.BL.Model
         /// <param name="comment"> Комментарий. </param>
         public UserComment(User user, int rating, string comment)
         {
-            //TODO: Проверка
-            Author = user;
+            Author = user ?? throw new ArgumentNullException(nameof(user));
             Rating = rating;
-            Comment = comment;
+            Comment = comment ?? throw new ArgumentNullException(nameof(comment));
         }
 
         public override string ToString()

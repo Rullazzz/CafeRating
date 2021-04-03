@@ -3,25 +3,29 @@ using CafeRating.BL.Controller;
 using System.Linq;
 using CafeRating.BL.Model;
 using System.Collections.Generic;
+using System.Globalization;
+using System.Resources;
 
 namespace CafeRating.CMD
 {
     class Program
     {
-        public static ConsoleColor ConsoleColorText = ConsoleColor.Green;
+        private static ConsoleColor ConsoleColorText = ConsoleColor.Green;
+        private static CultureInfo culture = CultureInfo.CreateSpecificCulture("");
+        private static ResourceManager resourceManager = new ResourceManager("CafeRating.CMD.Languages.Messages", typeof(Program).Assembly);
 
         static void Main(string[] args)
         {
             Console.ForegroundColor = ConsoleColorText;
-            Console.WriteLine("Вас приветствует приложение CafeRating!");
+            Console.WriteLine(resourceManager.GetString("Hello", culture));
 
-            Console.Write("Введите имя пользователя: ");
+            Console.Write(resourceManager.GetString("EnterName", culture));
             var name = Console.ReadLine();
 
             var userController = new UserController(name);
             if (userController.IsNewUser)
             {
-                Console.Write("Введите пол: ");
+                Console.Write(resourceManager.GetString("EnterGender", culture));
                 var gender = Console.ReadLine();
                 var birthDate = ParseDate();
 
@@ -31,8 +35,7 @@ namespace CafeRating.CMD
             var cafeController = new CafeController(userController.CurrentUser);
 
             ShowCommands();
-            bool isAlive = true;
-            while (isAlive)
+            while (true)
             {
                 var choice = Console.ReadLine();
 
@@ -45,20 +48,18 @@ namespace CafeRating.CMD
                         AddComment(cafeController, userController.CurrentUser);
                         break;
                     case "exit":
-                        isAlive = false; 
+                        Environment.Exit(0);
                         break;
                     default:
-                        ShowError("Неизвестная команда!");
+                        ShowError(resourceManager.GetString("UnknownCommand", culture));
                         break;
                 }
             }
-            Console.Write("Программа завершена . . .");
-            Console.ReadLine();
         }
 
         private static void AddComment(CafeController cafeController, User user)
         {
-            Console.WriteLine("О каком кафе хотите оставить свой отзыв?");
+            Console.WriteLine(resourceManager.GetString("WhichCafe", culture));
             foreach (var _cafe in cafeController.Cafes)
                 Console.WriteLine("\t" + _cafe);
 
@@ -66,10 +67,10 @@ namespace CafeRating.CMD
             var cafe = cafeController.Cafes.FirstOrDefault(c => c.Name == choice);
             if (cafe != null)
             {
-                Console.Write("Ваша оценка данного кафе от 1 до 5: ");
+                Console.Write(resourceManager.GetString("EnterRating", culture));
                 var rating = EnterRating();
 
-                Console.Write("Введите свой комментарий: ");
+                Console.Write(resourceManager.GetString("EnterComment", culture));
                 var comment = Console.ReadLine();
 
                 var userComment = new UserComment(user, rating, comment);
@@ -77,7 +78,7 @@ namespace CafeRating.CMD
             }
             else
             {
-                ShowError("Такого кафе нет");
+                ShowError(resourceManager.GetString("ErrorDoesNotExistCafe", culture));
             }
         }
 
@@ -86,14 +87,14 @@ namespace CafeRating.CMD
             DateTime birthDate;
             while (true)
             {
-                Console.Write("Введите дату рождения (dd.mm.yyyy): ");
+                Console.Write(resourceManager.GetString("EnterDateTime", culture));
                 if (DateTime.TryParse(Console.ReadLine(), out birthDate))
                 {
                     break;
                 }
                 else
                 {
-                    ShowError("Неверный формат даты рождения");
+                    ShowError(resourceManager.GetString("ErrorInvalidDateOfBirthFormat", culture));
                 }
             }
             return birthDate;
@@ -110,7 +111,7 @@ namespace CafeRating.CMD
                 }
                 else
                 {
-                    ShowError("Неккоректный ввод");
+                    ShowError(resourceManager.GetString("ErrorInvalidInput", culture));
                 }
             }
         }
@@ -119,9 +120,9 @@ namespace CafeRating.CMD
         {
             var commands = new string[]
             {
-                "help - Вывод всех команд", // Вывод всех команд.
-                "comment - Оставить комментарий какому-либо кафе", // Оставить комментарий какому-либо кафе.
-                "exit - Выйти из приложения", // Выйти из приложения
+                resourceManager.GetString("CommandHelp", culture), // Вывод всех команд.
+                resourceManager.GetString("CommandComment", culture), // Оставить комментарий какому-либо кафе.
+                resourceManager.GetString("CommandExit", culture), // Выйти из приложения
             };
             foreach (var com in commands)
                 Console.WriteLine(com);
