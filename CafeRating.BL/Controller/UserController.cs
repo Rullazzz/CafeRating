@@ -36,9 +36,7 @@ namespace CafeRating.BL.Controller
         public UserController(string userName)
         {
             if (string.IsNullOrWhiteSpace(userName))
-            {
                 throw new ArgumentNullException("Имя пользователя не может быть пустым или null", nameof(userName));
-            }
 
             Users = GetUserData();
 
@@ -61,14 +59,10 @@ namespace CafeRating.BL.Controller
         {
             #region Проверка
             if (string.IsNullOrWhiteSpace(gender))
-            {
                 throw new ArgumentNullException("Пол пользователя не может быть пустым или null", nameof(gender));
-            }
-
-            if (birthDate < DateTime.Parse("01.01.1900") || birthDate >= DateTime.Now)
-            {
+            
+            if (birthDate < DateTime.Parse("01.01.1900") || birthDate >= DateTime.Now)            
                 throw new ArgumentException("Невозможная дата рождения.", nameof(birthDate));
-            }
             #endregion
 
             CurrentUser.Gender = gender;

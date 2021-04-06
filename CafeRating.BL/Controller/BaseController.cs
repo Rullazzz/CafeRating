@@ -22,13 +22,9 @@ namespace CafeRating.BL.Controller
             using (var fs = new FileStream(fileName, FileMode.OpenOrCreate))
             {
                 if (fs.Length > 0 && formatter.Deserialize(fs) is T items)
-                {
-                    return items;
-                }
+                    return items;                
                 else
-                {
-                    return default(T);
-                }
+                    return default(T);                
             }
         }
 

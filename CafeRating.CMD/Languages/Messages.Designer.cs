@@ -61,11 +61,29 @@ namespace CafeRating.CMD.Languages {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Выберите кафе.
+        /// </summary>
+        internal static string ChooseCafe {
+            get {
+                return ResourceManager.GetString("ChooseCafe", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на comment - Оставить комментарий какому-либо кафе.
         /// </summary>
         internal static string CommandComment {
             get {
                 return ResourceManager.GetString("CommandComment", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Удалить комментарий.
+        /// </summary>
+        internal static string CommandDelete {
+            get {
+                return ResourceManager.GetString("CommandDelete", resourceCulture);
             }
         }
         
@@ -174,15 +192,6 @@ namespace CafeRating.CMD.Languages {
         internal static string UnknownCommand {
             get {
                 return ResourceManager.GetString("UnknownCommand", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Ищет локализованную строку, похожую на О каком кафе хотите оставить свой отзыв?.
-        /// </summary>
-        internal static string WhichCafe {
-            get {
-                return ResourceManager.GetString("WhichCafe", resourceCulture);
             }
         }
     }

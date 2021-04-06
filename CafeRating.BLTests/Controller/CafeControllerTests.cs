@@ -19,7 +19,7 @@ namespace CafeRating.BL.Controller.Tests
             var userName = "Патрик";
             var rnd = new Random();
             var user = new User(userName);
-            var cafe = new Cafe("Прикол");
+            var cafe = new Cafe("KFT");
             var userComment = new UserComment(user, rnd.Next(1, 6), Guid.NewGuid().ToString());
             var cafeController = new CafeController(user);
 
@@ -27,13 +27,26 @@ namespace CafeRating.BL.Controller.Tests
             cafeController.AddComment(cafe, userComment);
 
             // Assert
-            Assert.IsTrue(cafeController.GetComments(cafe).SingleOrDefault(c => c.Comment == userComment.Comment) != null);
+            Assert.IsTrue(cafeController.GetComments(cafe.Name).SingleOrDefault(c => c.Comment == userComment.Comment) != null);
         }
 
-        //[TestMethod()]
-        //public void DeleteCommentTest()
-        //{
-        //    Assert.Fail();
-        //}
+        [TestMethod()]
+        public void DeleteCommentTest()
+        {
+            // Arrange
+            var userName = "Алекс";
+            var rnd = new Random();
+            var user = new User(userName);
+            var userComment = new UserComment(user, rnd.Next(1, 6), Guid.NewGuid().ToString());
+            var cafeController = new CafeController(user);
+
+            // Act
+            var cafe = cafeController.GetCafe("BlackWhite");
+            cafeController.AddComment(cafe, userComment);
+            cafeController.DeleteComment(cafe);
+
+            // Assert
+            Assert.IsTrue(cafeController.GetComments(cafe.Name).Count == 0);
+        }
     }
 }

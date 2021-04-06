@@ -33,9 +33,32 @@ namespace CafeRating.BL.Controller
             CurrentUser = currentUser ?? throw new ArgumentNullException("Имя пользователя не может быть пустым или null", nameof(currentUser));
         }
 
-        public List<UserComment> GetComments(Cafe cafe)
+        /// <summary>
+        /// Получить кафе с таким названием.
+        /// </summary>
+        /// <param name="cafeName"> Название кафе. </param>
+        /// <returns> Кафе или null, если такого нет. </returns>
+        public Cafe GetCafe(string cafeName)
         {
-            return Load<List<UserComment>>($"{cafe.Name}.dat");
+            return Cafes.FirstOrDefault(c => c.Name == cafeName);
+        }
+
+        /// <summary>
+        /// Получить комментарии кафе из списка.
+        /// </summary>
+        /// <param name="cafeName"> Название кафе. </param>
+        /// <returns> Список комментариев </returns>
+        public List<UserComment> GetComments(string cafeName)
+        {
+            #region Проверка
+            if (cafeName == null)
+                throw new ArgumentNullException(nameof(cafeName));
+            if (Cafes.FirstOrDefault(c => c.Name == cafeName) == null)
+                throw new ArgumentException("Не существует кафе с таким названием", nameof(cafeName));
+            #endregion
+
+            var comments = Load<List<UserComment>>($"{cafeName}.dat");
+            return (comments != null) ? comments : new List<UserComment>();
         }
 
         /// <summary>
@@ -46,20 +69,18 @@ namespace CafeRating.BL.Controller
         public void AddComment(Cafe cafe, UserComment userComment)
         {
             #region Проверка
-            if (cafe is null)
-            {
+            if (cafe == null)
                 throw new ArgumentNullException($"{nameof(cafe)} не может быть null", nameof(cafe));
-            }
-
-            if (userComment is null)
-            {
+            if (userComment == null)
                 throw new ArgumentNullException($"{nameof(userComment)} не может быть null", nameof(userComment));
-            }
+            if (Cafes.FirstOrDefault(c => c.Name == cafe.Name) == null)
+                throw new ArgumentException("Не существует кафе с таким названием", nameof(cafe.Name));
             #endregion
 
-            cafe.Comments = GetComments(cafe);
-            if (cafe.Comments == null)
-                cafe.Comments = new List<UserComment>();
+            cafe.Comments = GetComments(cafe.Name);
+            var oldComment = cafe.Comments.SingleOrDefault(c => c.Author.Name == CurrentUser.Name);
+            if (oldComment != null)
+                cafe.Comments.Remove(oldComment);
 
             cafe.Comments.Add(userComment);
             Save($"{cafe.Name}.dat", cafe.Comments);
@@ -69,17 +90,32 @@ namespace CafeRating.BL.Controller
         /// Удалить комментарий.
         /// </summary>
         /// <param name="cafeName"> Название кафе. </param>
-        public void DeleteComment(string cafeName)
+        /// <returns> 
+        /// Возвращает true, если комментарий успешно удален.
+        /// Если комментария нет, то возвращает false.
+        /// </returns>
+        public bool DeleteComment(Cafe cafe)
         {
-            var cafe = Cafes.First(c => c.Name == cafeName);
-            cafe.Comments.Remove(cafe.Comments.Find(c => c.Author == CurrentUser));
+            #region Проверка
+            if (cafe == null)
+                throw new ArgumentNullException($"{nameof(cafe)} не может быть null", nameof(cafe));
+            if (Cafes.FirstOrDefault(c => c.Name == cafe.Name) == null)
+                throw new ArgumentException("Не существует кафе с таким названием", nameof(cafe.Name));
+            #endregion
+
+            var comment = cafe.Comments.SingleOrDefault(c => c.Author == CurrentUser);
+            if (comment == null)
+                return false;
+            else
+                cafe.Comments.Remove(comment);
             Save($"{cafe.Name}.dat", cafe.Comments);
+            return true;
         }
 
         public void SetRating(Cafe cafe)
         {
-            cafe.Comments = GetComments(cafe);
-            if (cafe.Comments != null)
+            cafe.Comments = GetComments(cafe.Name);
+            if (cafe.Comments.Count > 0)
             {
                 var rating = 0;
                 foreach (var item in cafe.Comments)

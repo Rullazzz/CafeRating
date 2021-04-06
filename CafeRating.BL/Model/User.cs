@@ -76,9 +76,7 @@ namespace CafeRating.BL.Model
         public User(string name)
         {
             if (string.IsNullOrWhiteSpace(name))
-            {
-                throw new ArgumentException($"{nameof(name)} не может быть пустым или содержать только пробел", nameof(name));
-            }
+                throw new ArgumentException($"{nameof(name)} не может быть пустым или содержать только пробел", nameof(name));            
 
             Name = name;
         }
