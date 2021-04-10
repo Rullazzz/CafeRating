@@ -120,17 +120,23 @@
   <data name="ChooseCafe" xml:space="preserve">
     <value>Выберите кафе</value>
   </data>
+  <data name="CommandCafes" xml:space="preserve">
+    <value>cafes - Показать все кафе</value>
+  </data>
   <data name="CommandComment" xml:space="preserve">
     <value>comment - Оставить комментарий какому-либо кафе</value>
   </data>
   <data name="CommandDelete" xml:space="preserve">
-    <value>Удалить комментарий</value>
+    <value>delete - Удалить комментарий</value>
   </data>
   <data name="CommandExit" xml:space="preserve">
     <value>exit - Выйти из приложения</value>
   </data>
   <data name="CommandHelp" xml:space="preserve">
     <value>help - Вывод всех команд</value>
+  </data>
+  <data name="DeleteSuccessfully" xml:space="preserve">
+    <value>Комментарий успешно удален!</value>
   </data>
   <data name="EnterComment" xml:space="preserve">
     <value>Введите свой комментарий: </value>
@@ -158,6 +164,9 @@
   </data>
   <data name="Hello" xml:space="preserve">
     <value>Вас приветствует приложение CafeRating!</value>
+  </data>
+  <data name="NoComment" xml:space="preserve">
+    <value>Комментарий отсутствует!</value>
   </data>
   <data name="UnknownCommand" xml:space="preserve">
     <value>Неизвестная команда!</value>

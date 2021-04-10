@@ -70,6 +70,15 @@ namespace CafeRating.CMD.Languages {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на cafes - Показать все кафе.
+        /// </summary>
+        internal static string CommandCafes {
+            get {
+                return ResourceManager.GetString("CommandCafes", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на comment - Оставить комментарий какому-либо кафе.
         /// </summary>
         internal static string CommandComment {
@@ -79,7 +88,7 @@ namespace CafeRating.CMD.Languages {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Удалить комментарий.
+        ///   Ищет локализованную строку, похожую на delete - Удалить комментарий.
         /// </summary>
         internal static string CommandDelete {
             get {
@@ -102,6 +111,15 @@ namespace CafeRating.CMD.Languages {
         internal static string CommandHelp {
             get {
                 return ResourceManager.GetString("CommandHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Комментарий успешно удален!.
+        /// </summary>
+        internal static string DeleteSuccessfully {
+            get {
+                return ResourceManager.GetString("DeleteSuccessfully", resourceCulture);
             }
         }
         
@@ -183,6 +201,15 @@ namespace CafeRating.CMD.Languages {
         internal static string Hello {
             get {
                 return ResourceManager.GetString("Hello", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Комментарий отсутствует!.
+        /// </summary>
+        internal static string NoComment {
+            get {
+                return ResourceManager.GetString("NoComment", resourceCulture);
             }
         }
         

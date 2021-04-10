@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using CafeRating.BL.Controller;
+using System.Collections.Generic;
 
 namespace CafeRating.BL.Model
 {
@@ -8,16 +9,6 @@ namespace CafeRating.BL.Model
         /// Название кафе.
         /// </summary>
         public string Name { get; }
-
-        /// <summary>
-        /// Список комментариев кафе.
-        /// </summary>
-        public List<UserComment> Comments { get; set; }
-
-        /// <summary>
-        /// Рейтинг кафе.
-        /// </summary>
-        public double Rating { get; set; } = 0;
 
         /// <summary>
         /// Создать новое кафе.

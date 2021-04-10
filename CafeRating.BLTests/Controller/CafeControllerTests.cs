@@ -20,7 +20,7 @@ namespace CafeRating.BL.Controller.Tests
             var rnd = new Random();
             var user = new User(userName);
             var cafe = new Cafe("KFT");
-            var userComment = new UserComment(user, rnd.Next(1, 6), Guid.NewGuid().ToString());
+            var userComment = new UserComment(user.Name, cafe.Name, rnd.Next(1, 6), Guid.NewGuid().ToString());
             var cafeController = new CafeController(user);
 
             // Act
@@ -37,11 +37,11 @@ namespace CafeRating.BL.Controller.Tests
             var userName = "Алекс";
             var rnd = new Random();
             var user = new User(userName);
-            var userComment = new UserComment(user, rnd.Next(1, 6), Guid.NewGuid().ToString());
             var cafeController = new CafeController(user);
 
             // Act
             var cafe = cafeController.GetCafe("BlackWhite");
+            var userComment = new UserComment(user.Name, cafe.Name, rnd.Next(1, 6), Guid.NewGuid().ToString());
             cafeController.AddComment(cafe, userComment);
             cafeController.DeleteComment(cafe);
 

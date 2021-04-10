@@ -15,14 +15,11 @@ namespace CafeRating.BL.Controller
         /// <summary>
         /// Список кофеень.
         /// </summary>
-        public IEnumerable<Cafe> Cafes = new List<Cafe>
-        {
-            new Cafe("Mak dak"),
-            new Cafe("BlackWhite"),
-            new Cafe("KFT"),
-            new Cafe("У Ержана"),
-            new Cafe("Пельмешоты")
-        };
+        public IEnumerable<Cafe> Cafes { get; private set; }
+
+        private Dictionary<Cafe, double> RatingCafes { get; set; }
+
+        //private const string COMMENTS_FILE_NAME = "comments.dat";
 
         /// <summary>
         /// Создать контроллер.
@@ -31,6 +28,16 @@ namespace CafeRating.BL.Controller
         public CafeController(User currentUser)
         {
             CurrentUser = currentUser ?? throw new ArgumentNullException("Имя пользователя не может быть пустым или null", nameof(currentUser));
+        
+            Cafes = new List<Cafe>
+            {
+                new Cafe("Mak dak"),
+                new Cafe("BlackWhite"),
+                new Cafe("KFT"),
+                new Cafe("У Ержана"),
+                new Cafe("Пельмешоты")
+            };
+            RatingCafes = new Dictionary<Cafe, double>();
         }
 
         /// <summary>
@@ -40,6 +47,11 @@ namespace CafeRating.BL.Controller
         /// <returns> Кафе или null, если такого нет. </returns>
         public Cafe GetCafe(string cafeName)
         {
+            if (string.IsNullOrWhiteSpace(cafeName))
+            {
+                throw new ArgumentException($"{nameof(cafeName)} не может быть пустым или содержать только пробел", nameof(cafeName));
+            }
+
             return Cafes.FirstOrDefault(c => c.Name == cafeName);
         }
 
@@ -77,13 +89,13 @@ namespace CafeRating.BL.Controller
                 throw new ArgumentException("Не существует кафе с таким названием", nameof(cafe.Name));
             #endregion
 
-            cafe.Comments = GetComments(cafe.Name);
-            var oldComment = cafe.Comments.SingleOrDefault(c => c.Author.Name == CurrentUser.Name);
+            var comments = GetComments(cafe.Name);
+            var oldComment = comments.SingleOrDefault(c => c.Author == CurrentUser.Name);
             if (oldComment != null)
-                cafe.Comments.Remove(oldComment);
+                comments.Remove(oldComment);
 
-            cafe.Comments.Add(userComment);
-            Save($"{cafe.Name}.dat", cafe.Comments);
+            comments.Add(userComment);
+            Save($"{cafe.Name}.dat", comments);
         }
 
         /// <summary>
@@ -103,33 +115,55 @@ namespace CafeRating.BL.Controller
                 throw new ArgumentException("Не существует кафе с таким названием", nameof(cafe.Name));
             #endregion
 
-            var comment = cafe.Comments.SingleOrDefault(c => c.Author == CurrentUser);
+            var comments = GetComments(cafe.Name);
+            var comment = comments.SingleOrDefault(c => c.Author == CurrentUser.Name);
             if (comment == null)
                 return false;
             else
-                cafe.Comments.Remove(comment);
-            Save($"{cafe.Name}.dat", cafe.Comments);
+                comments.Remove(comment);
+            Save($"{cafe.Name}.dat", comments);
             return true;
         }
 
-        public void SetRating(Cafe cafe)
+        /// <summary>
+        /// Установить рейтинг кафе.
+        /// </summary>
+        /// <param name="cafe"> Кафе. </param>
+        private void SetRating(Cafe cafe)
         {
-            cafe.Comments = GetComments(cafe.Name);
-            if (cafe.Comments.Count > 0)
+            var comments = GetComments(cafe.Name);
+            double rating = 0;
+            if (comments.Count > 0)
             {
-                var rating = 0;
-                foreach (var item in cafe.Comments)
+                foreach (var userComment in comments)
                 {
-                    rating += item.Rating;
+                    rating += userComment.Rating;
                 }
-                cafe.Rating = rating / cafe.Comments.Count;
+                RatingCafes[cafe] = rating / comments.Count;
+            }
+            else
+            {
+                RatingCafes[cafe] = rating;
             }
         }
 
+        /// <summary>
+        /// Получить рейтинг кафе.
+        /// </summary>
+        /// <param name="cafe"> Кафе. </param>
+        /// <returns> Рейтинг кафе </returns>
         public double GetRating(Cafe cafe)
         {
             SetRating(cafe);
-            return cafe.Rating;
+            return RatingCafes[cafe];
+        }
+
+        public List<UserComment> GetAllComments()
+        {
+            var allComments = new List<UserComment>();
+            foreach (var cafe in Cafes)
+                allComments.AddRange(GetComments(cafe.Name));
+            return allComments;
         }
     }
 }

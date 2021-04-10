@@ -2,7 +2,6 @@
 using CafeRating.BL.Controller;
 using System.Linq;
 using CafeRating.BL.Model;
-using System.Collections.Generic;
 using System.Globalization;
 using System.Resources;
 
@@ -52,6 +51,9 @@ namespace CafeRating.CMD
                     case "delete":
                         DeleteComment(cafeController, userController.CurrentUser);
                         break;
+                    case "cafes":
+                        ShowCafes(cafeController);
+                        break;
                     case "exit":
                         Environment.Exit(0);
                         break;
@@ -64,17 +66,20 @@ namespace CafeRating.CMD
 
         private static void DeleteComment(CafeController cafeController, User user)
         {
-            // TODO: допилить.
             Console.WriteLine(resourceManager.GetString("ChooseCafe", culture));
             ShowCafes(cafeController);
 
             while (true)
             {
                 var choice = Console.ReadLine();
-                var cafe = cafeController.Cafes.FirstOrDefault(c => c.Name == choice);
+                var cafe = cafeController.GetCafe(choice);
                 if (cafe != null)
                 {
-                    
+                    var isDelete = cafeController.DeleteComment(cafe);
+                    if (isDelete)
+                        Console.WriteLine(resourceManager.GetString("DeleteSuccessfully"));
+                    else
+                        ShowError(resourceManager.GetString("NoComment"));
                     break;
                 }
                 else
@@ -86,7 +91,6 @@ namespace CafeRating.CMD
 
         private static void AddComment(CafeController cafeController, User user)
         {
-            // TODO: Добавить бесконечную проверку входных данных.
             Console.WriteLine(resourceManager.GetString("ChooseCafe", culture));
             ShowCafes(cafeController);
 
@@ -102,7 +106,7 @@ namespace CafeRating.CMD
                     Console.Write(resourceManager.GetString("EnterComment", culture));
                     var comment = Console.ReadLine();
 
-                    var userComment = new UserComment(user, rating, comment);
+                    var userComment = new UserComment(user.Name, cafe.Name, rating, comment);
                     cafeController.AddComment(cafe, userComment);
                     break;
                 }
@@ -146,8 +150,9 @@ namespace CafeRating.CMD
             {
                 resourceManager.GetString("CommandHelp", culture), // Вывод всех команд.
                 resourceManager.GetString("CommandComment", culture), // Оставить комментарий какому-либо кафе.
-                resourceManager.GetString("CommandDelete", culture), // Удалить комментарий
-                resourceManager.GetString("CommandExit", culture), // Выйти из приложения
+                resourceManager.GetString("CommandDelete", culture), // Удалить комментарий.
+                resourceManager.GetString("CommandCafes", culture), // Показать все кафе.
+                resourceManager.GetString("CommandExit", culture), // Выйти из приложения.
             };
             foreach (var com in commands)
                 Console.WriteLine(com);
@@ -155,8 +160,9 @@ namespace CafeRating.CMD
 
         private static void ShowCafes(CafeController cafeController)
         {
-            foreach (var _cafe in cafeController.Cafes)
-                Console.WriteLine("\t" + _cafe);
+            foreach (var cafe in cafeController.Cafes)
+                Console.WriteLine("{0, 12} \t Средняя оценка: {1, 3} ({2} комментариев)", cafe.Name, cafeController.GetRating(cafe), cafeController.GetComments(cafe.Name).Count);
+            
         }
 
         private static void ShowError(string error)
