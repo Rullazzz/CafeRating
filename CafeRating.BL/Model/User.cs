@@ -23,7 +23,7 @@ namespace CafeRating.BL.Model
         /// <summary>
         /// Дата рождения.
         /// </summary>
-        public DateTime BirthDate { get; set; }
+        public DateTime BirthDate { get; set; } = DateTime.Now;
 
         /// <summary>
         /// Возраст.

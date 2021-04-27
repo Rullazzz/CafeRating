@@ -5,6 +5,7 @@ namespace CafeRating.BL.Model
     [Serializable]
     public class UserComment
     {
+        #region Свойства
         public string CafeName { get; }
 
         /// <summary>
@@ -20,7 +21,8 @@ namespace CafeRating.BL.Model
         /// <summary>
         /// Автор комментария.
         /// </summary>
-        public string Author { get; }
+        public User User { get; }
+        #endregion
 
         /// <summary>
         /// Создать новый комментарий.
@@ -28,14 +30,14 @@ namespace CafeRating.BL.Model
         /// <param name="nameCafe"> Название кафе. </param>
         /// <param name="rating"> Оценка кафе. </param>
         /// <param name="comment"> Комментарий. </param>
-        public UserComment(string user, string cafeName, int rating, string comment)
+        public UserComment(User user, string cafeName, int rating, string comment)
         {
             if (string.IsNullOrWhiteSpace(cafeName))
             {
                 throw new ArgumentException($"{nameof(cafeName)} не может быть пустым или содержать только пробел", nameof(cafeName));
             }
 
-            Author = user ?? throw new ArgumentNullException(nameof(user));
+            User = user ?? throw new ArgumentNullException(nameof(user));
             CafeName = cafeName;
             Rating = rating;
             Comment = comment ?? throw new ArgumentNullException(nameof(comment));
@@ -43,7 +45,7 @@ namespace CafeRating.BL.Model
 
         public override string ToString()
         {
-            return $"{Author} ставит оценку {Rating}: {Comment}";
+            return $"{User} ставит оценку {Rating}: {Comment}";
         }
     }
 }

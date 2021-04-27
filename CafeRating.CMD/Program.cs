@@ -39,17 +39,16 @@ namespace CafeRating.CMD
                 Console.Write(">> ");
                 var choice = Console.ReadLine();
 
-                // TODO: Добавить больше команд.
                 switch (choice)
                 {
                     case "help":
                         ShowCommands();
                         break;
                     case "comment":
-                        AddComment(cafeController, userController.CurrentUser);
+                        AddComment(cafeController);
                         break;
                     case "delete":
-                        DeleteComment(cafeController, userController.CurrentUser);
+                        DeleteComment(cafeController);
                         break;
                     case "cafes":
                         ShowCafes(cafeController);
@@ -64,7 +63,7 @@ namespace CafeRating.CMD
             }
         }
 
-        private static void DeleteComment(CafeController cafeController, User user)
+        private static void DeleteComment(CafeController cafeController)
         {
             Console.WriteLine(resourceManager.GetString("ChooseCafe", culture));
             ShowCafes(cafeController);
@@ -89,7 +88,7 @@ namespace CafeRating.CMD
             }
         }
 
-        private static void AddComment(CafeController cafeController, User user)
+        private static void AddComment(CafeController cafeController)
         {
             Console.WriteLine(resourceManager.GetString("ChooseCafe", culture));
             ShowCafes(cafeController);
@@ -106,8 +105,8 @@ namespace CafeRating.CMD
                     Console.Write(resourceManager.GetString("EnterComment", culture));
                     var comment = Console.ReadLine();
 
-                    var userComment = new UserComment(user.Name, cafe.Name, rating, comment);
-                    cafeController.AddComment(cafe, userComment);
+                    var userComment = new UserComment(cafeController.CurrentUser, cafe.Name, rating, comment);
+                    cafeController.AddComment(userComment);
                     break;
                 }
                 else
@@ -161,7 +160,7 @@ namespace CafeRating.CMD
         private static void ShowCafes(CafeController cafeController)
         {
             foreach (var cafe in cafeController.Cafes)
-                Console.WriteLine("{0, 12} \t Средняя оценка: {1, 3} ({2} комментариев)", cafe.Name, cafeController.GetRating(cafe), cafeController.GetComments(cafe.Name).Count);
+                Console.WriteLine("{0, 12} \t Средняя оценка: {1, 3} ({2} комментариев)", cafe.Name, cafeController.GetRating(cafe), cafeController.GetComments().Where(c => c.CafeName == cafe.Name).Count());
             
         }
 

@@ -1,9 +1,7 @@
 ﻿using CafeRating.BL.Model;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Runtime.Serialization.Formatters.Binary;
 
 namespace CafeRating.BL.Controller
 {
@@ -27,8 +25,6 @@ namespace CafeRating.BL.Controller
         /// </summary>
         public bool IsNewUser { get; } = false;
 
-        private const string USERS_FILE_NAME = "users.dat"; 
-
         /// <summary>
         /// Создание нового контроллера пользователя.
         /// </summary>
@@ -46,7 +42,6 @@ namespace CafeRating.BL.Controller
                 CurrentUser = new User(userName);
                 Users.Add(CurrentUser);
                 IsNewUser = true;
-                Save();
             }
         }
 
@@ -60,13 +55,15 @@ namespace CafeRating.BL.Controller
             #region Проверка
             if (string.IsNullOrWhiteSpace(gender))
                 throw new ArgumentNullException("Пол пользователя не может быть пустым или null", nameof(gender));
-            
             if (birthDate < DateTime.Parse("01.01.1900") || birthDate >= DateTime.Now)            
                 throw new ArgumentException("Невозможная дата рождения.", nameof(birthDate));
+            if (!IsNewUser)
+                throw new Exception("Пользователь не является новым.");
             #endregion
 
             CurrentUser.Gender = gender;
             CurrentUser.BirthDate = birthDate;
+            Save();
         }
 
         /// <summary>
@@ -75,7 +72,7 @@ namespace CafeRating.BL.Controller
         /// <returns> Пользователи приложения. </returns>
         private List<User> GetUserData()
         {
-            return Load<List<User>>(USERS_FILE_NAME) ?? new List<User>();
+            return Load<User>() ?? new List<User>();
         }
 
         /// <summary>
@@ -83,7 +80,7 @@ namespace CafeRating.BL.Controller
         /// </summary>
         public void Save()
         {
-            Save(USERS_FILE_NAME, Users);
+            Save(Users);
         }
     }
 }

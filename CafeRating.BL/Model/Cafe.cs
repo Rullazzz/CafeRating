@@ -1,14 +1,13 @@
-﻿using CafeRating.BL.Controller;
-using System.Collections.Generic;
-
-namespace CafeRating.BL.Model
+﻿namespace CafeRating.BL.Model
 {
     public class Cafe
     {
+        #region Свойства
         /// <summary>
         /// Название кафе.
         /// </summary>
         public string Name { get; }
+        #endregion
 
         /// <summary>
         /// Создать новое кафе.

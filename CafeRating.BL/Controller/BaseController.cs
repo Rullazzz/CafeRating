@@ -1,10 +1,21 @@
-﻿using System.IO;
-using System.Runtime.Serialization.Formatters.Binary;
+﻿using System.Collections.Generic;
 
 namespace CafeRating.BL.Controller
 {
     public abstract class BaseController
     {
+        private readonly IDataSaver manager = new SerializeDataSaver();
+
+        /// <summary>
+        /// Сохранить данные.
+        /// </summary>
+        /// <param name="fileName"> Путь для сохранения данных. </param>
+        /// <param name="item"> Объект сохранения. </param>
+        protected void Save<T>(List<T> item) where T : class
+        {
+            manager.Save(item);
+        }
+
         /// <summary>
         /// Получить данные
         /// </summary>
@@ -12,32 +23,9 @@ namespace CafeRating.BL.Controller
         /// <param name="fileName"> Путь для сохранения данных. </param>
         /// <param name="item"> Объект сохранения </param>
         /// <returns> Данные из файла или Default(T) </returns>
-        protected T Load<T>(string fileName)
+        protected List<T> Load<T>() where T : class
         {
-            var formatter = new BinaryFormatter();
-
-            using (var fs = new FileStream(fileName, FileMode.OpenOrCreate))
-            {
-                if (fs.Length > 0 && formatter.Deserialize(fs) is T items)
-                    return items;                
-                else
-                    return default(T);                
-            }
-        }
-
-        /// <summary>
-        /// Сохранить данные.
-        /// </summary>
-        /// <param name="fileName"> Путь для сохранения данных. </param>
-        /// <param name="item"> Объект сохранения. </param>
-        protected void Save(string fileName, object item)
-        {
-            var formatter = new BinaryFormatter();
-
-            using (var fs = new FileStream(fileName, FileMode.OpenOrCreate))
-            {
-                formatter.Serialize(fs, item);
-            }
+            return manager.Load<T>();
         }
     }
 }

@@ -1,10 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using CafeRating.BL.Controller;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using CafeRating.BL.Model;
 
 namespace CafeRating.BL.Controller.Tests
@@ -20,14 +16,14 @@ namespace CafeRating.BL.Controller.Tests
             var rnd = new Random();
             var user = new User(userName);
             var cafe = new Cafe("KFT");
-            var userComment = new UserComment(user.Name, cafe.Name, rnd.Next(1, 6), Guid.NewGuid().ToString());
+            var userComment = new UserComment(user, cafe.Name, rnd.Next(1, 6), Guid.NewGuid().ToString());
             var cafeController = new CafeController(user);
 
             // Act
-            cafeController.AddComment(cafe, userComment);
+            cafeController.AddComment(userComment);
 
             // Assert
-            Assert.IsTrue(cafeController.GetComments(cafe.Name).SingleOrDefault(c => c.Comment == userComment.Comment) != null);
+            Assert.IsTrue(cafeController.GetComments().SingleOrDefault(c => c.Comment == userComment.Comment) != null);
         }
 
         [TestMethod()]
@@ -41,12 +37,12 @@ namespace CafeRating.BL.Controller.Tests
 
             // Act
             var cafe = cafeController.GetCafe("BlackWhite");
-            var userComment = new UserComment(user.Name, cafe.Name, rnd.Next(1, 6), Guid.NewGuid().ToString());
-            cafeController.AddComment(cafe, userComment);
+            var userComment = new UserComment(user, cafe.Name, rnd.Next(1, 6), Guid.NewGuid().ToString());
+            cafeController.AddComment(userComment);
             cafeController.DeleteComment(cafe);
 
             // Assert
-            Assert.IsTrue(cafeController.GetComments(cafe.Name).Count == 0);
+            Assert.IsTrue(cafeController.GetComments().Where(c => c.CafeName == cafe.Name).Count() == 0);
         }
     }
 }
