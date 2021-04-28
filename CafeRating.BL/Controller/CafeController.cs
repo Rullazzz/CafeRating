@@ -29,11 +29,11 @@ namespace CafeRating.BL.Controller
         
             Cafes = new List<Cafe>
             {
-                new Cafe("Mak dak"),
-                new Cafe("BlackWhite"),
-                new Cafe("KFT"),
-                new Cafe("У Ержана"),
-                new Cafe("Пельмешоты")
+                new Cafe("mcdonalds"),
+                new Cafe("Burger King"),
+                new Cafe("KFC"),
+                new Cafe("Додо Пицца"),
+                new Cafe("Shredder Pizza")
             };
             RatingCafes = new Dictionary<Cafe, double>();
         }

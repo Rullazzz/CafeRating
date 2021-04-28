@@ -214,6 +214,15 @@ namespace CafeRating.CMD.Languages {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на comments - Показать комментарии кафе .
+        /// </summary>
+        internal static string ShowCommentsCafe {
+            get {
+                return ResourceManager.GetString("ShowCommentsCafe", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Неизвестная команда!.
         /// </summary>
         internal static string UnknownCommand {

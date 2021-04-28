@@ -53,6 +53,9 @@ namespace CafeRating.CMD
                     case "cafes":
                         ShowCafes(cafeController);
                         break;
+                    case "comments":
+                        ShowCommentsCafe(cafeController);
+                        break;
                     case "exit":
                         Environment.Exit(0);
                         break;
@@ -65,6 +68,11 @@ namespace CafeRating.CMD
 
         private static void DeleteComment(CafeController cafeController)
         {
+            if (cafeController is null)
+            {
+                throw new ArgumentNullException(nameof(cafeController));
+            }
+
             Console.WriteLine(resourceManager.GetString("ChooseCafe", culture));
             ShowCafes(cafeController);
 
@@ -90,6 +98,11 @@ namespace CafeRating.CMD
 
         private static void AddComment(CafeController cafeController)
         {
+            if (cafeController is null)
+            {
+                throw new ArgumentNullException(nameof(cafeController));
+            }
+
             Console.WriteLine(resourceManager.GetString("ChooseCafe", culture));
             ShowCafes(cafeController);
 
@@ -151,14 +164,52 @@ namespace CafeRating.CMD
                 resourceManager.GetString("CommandComment", culture), // Оставить комментарий какому-либо кафе.
                 resourceManager.GetString("CommandDelete", culture), // Удалить комментарий.
                 resourceManager.GetString("CommandCafes", culture), // Показать все кафе.
+                resourceManager.GetString("ShowCommentsCafe", culture), // Показать комментарии кафе. 
                 resourceManager.GetString("CommandExit", culture), // Выйти из приложения.
             };
             foreach (var com in commands)
                 Console.WriteLine(com);
         }
 
+        private static void ShowCommentsCafe(CafeController cafeController)
+        {
+            #region Проверка
+            if (cafeController is null)
+            {
+                throw new ArgumentNullException(nameof(cafeController));
+            }
+            #endregion
+
+            ShowCafes(cafeController);
+            string cafeName;
+            while (true)
+            {
+                cafeName = Console.ReadLine();
+                if (cafeController.GetCafe(cafeName) != null)
+                {
+                    break;
+                }
+                else
+                {
+                    ShowError(resourceManager.GetString("ErrorInvalidInput", culture));
+                    return;
+                }
+            }
+
+            var commentsCafe = cafeController.GetComments().Where(c => c.CafeName == cafeName);
+            foreach (var comment in commentsCafe)
+            {
+                Console.WriteLine(comment);
+            }
+        }
+
         private static void ShowCafes(CafeController cafeController)
         {
+            if (cafeController is null)
+            {
+                throw new ArgumentNullException(nameof(cafeController));
+            }
+
             foreach (var cafe in cafeController.Cafes)
                 Console.WriteLine("{0, 12} \t Средняя оценка: {1, 3} ({2} комментариев)", cafe.Name, cafeController.GetRating(cafe), cafeController.GetComments().Where(c => c.CafeName == cafe.Name).Count());
             
@@ -166,6 +217,11 @@ namespace CafeRating.CMD
 
         private static void ShowError(string error)
         {
+            if (error is null)
+            {
+                throw new ArgumentNullException(nameof(error));
+            }
+
             Console.ForegroundColor = ConsoleColor.Red;
             Console.WriteLine(error);
             Console.ForegroundColor = ConsoleColorText;

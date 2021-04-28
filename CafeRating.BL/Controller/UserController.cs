@@ -42,6 +42,7 @@ namespace CafeRating.BL.Controller
                 CurrentUser = new User(userName);
                 Users.Add(CurrentUser);
                 IsNewUser = true;
+                Save();
             }
         }
 

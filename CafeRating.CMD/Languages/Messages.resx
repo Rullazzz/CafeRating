@@ -168,6 +168,9 @@
   <data name="NoComment" xml:space="preserve">
     <value>Комментарий отсутствует!</value>
   </data>
+  <data name="ShowCommentsCafe" xml:space="preserve">
+    <value>comments - Показать комментарии кафе </value>
+  </data>
   <data name="UnknownCommand" xml:space="preserve">
     <value>Неизвестная команда!</value>
   </data>
